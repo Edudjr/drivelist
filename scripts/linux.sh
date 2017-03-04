@@ -25,11 +25,16 @@ for disk in $DISKS; do
   fi
 
   device="/dev/$disk"
-  diskinfo=($(lsblk -b -d "$device" --output SIZE,RO,RM,MODEL | ignore_first_line))
+  diskinfo=($(lsblk -b -d "$device" --output SIZE,RO,RM,TRAN,MODEL | ignore_first_line))
+  #Check for diskinfo before continuing
+  if [ -z "${diskinfo-}" ]; then
+    continue
+  fi
   size=${diskinfo[0]}
   protected=${diskinfo[1]}
   removable=${diskinfo[2]}
-  description=${diskinfo[*]:3}
+  tran="${diskinfo[3]:=NA}"
+  description=${diskinfo[*]:4}
   mountpoints="$(get_mountpoints "$device")"
 
   # If we couldn't get the mount points as `/dev/$disk`,
@@ -53,6 +58,7 @@ for disk in $DISKS; do
   echo "device: $device"
   echo "description: $description"
   echo "size: $size"
+  echo "type: $tran"
 
   if [ -z "$mountpoints" ]; then
     echo "mountpoints: []"
