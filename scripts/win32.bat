@@ -110,6 +110,7 @@ Function GetTopLevelDrives()
 
 		Summary.Add "Description", TopLevelDrive.Caption
 		Summary.Add "Size", TopLevelDrive.Size
+		Summary.Add "InterfaceType", TopLevelDrive.InterfaceType
 
 		Set Mountpoints = new List
 		IsRemovable = InStr(TopLevelDrive.MediaType, "Removable") = 1
@@ -149,6 +150,7 @@ For Each TopLevelDrive In GetTopLevelDrives().GetArray()
 	Wscript.Echo "device: """ & TopLevelDrive.Item("Device") & """"
 	Wscript.Echo "description: """ & TopLevelDrive.Item("Description") & """"
 	Wscript.Echo "size: " & TopLevelDrive.Item("Size")
+	Wscript.Echo "type: " & TopLevelDrive.Item("InterfaceType")
 	Wscript.Echo "raw: """ & TopLevelDrive.Item("Device") & """"
 	Wscript.Echo "system: " & BooleanToString(Not TopLevelDrive.Item("IsRemovable"))
 	Wscript.Echo "protected: " & BooleanToString(TopLevelDrive.Item("IsProtected"))
